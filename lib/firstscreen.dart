@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
+// import 'package:sqflite/sqflite.dart';
+import 'databaseprovider.dart';
 import 'global_variables.dart';
 import 'heap%20_sort.dart';
 
 class NoteList extends StatefulWidget {
-  const NoteList({super.key});
+  final DatabaseProvider databaseProvider;
+  const NoteList({super.key, required this.databaseProvider});
 
   @override
   State<NoteList> createState() => _NoteList();
@@ -76,7 +79,7 @@ class _NoteList extends State<NoteList> {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (context) => const HeapSort(),
+                      builder: (context) => HeapSort(),
                     ),
                   );
                 },
