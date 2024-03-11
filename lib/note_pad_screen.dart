@@ -57,8 +57,6 @@ class _NotePadScreenState extends State<NotePadScreen> {
         .toList();
   }
 
- 
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -87,11 +85,11 @@ class _NotePadScreenState extends State<NotePadScreen> {
                   shrinkWrap: true,
                   itemCount: list?.length,
                   itemBuilder: (context, index) {
-                    return const ListTile(
-                        // leading: Text(list?[index]['id'].toString()??),
-                        // title: Text(list![index]['title'].toString()),
-                        //subtitle: Text(list![index]['created_at'].toString()),
-                        );
+                    return ListTile(
+                      leading: Text(list![index]['id'].toString()),
+                      title: Text(list![index]['title'].toString()),
+                      subtitle: Text(list![index]['created_at'].toString()),
+                    );
                   }),
             )
           ],

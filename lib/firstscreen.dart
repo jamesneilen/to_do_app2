@@ -31,6 +31,7 @@ class _NoteList extends State<NoteList> {
   void deleteNotes(int index) {
     setState(() {
       filteredNotes.removeAt(index);
+      sampleNotes.removeAt(index);
     });
   }
 
@@ -82,90 +83,87 @@ class _NoteList extends State<NoteList> {
                 child: ListView.builder(
                   itemCount: filteredNotes.length,
                   itemBuilder: (context, index) {
-                    return Expanded(
-                      child: Card(
-                        elevation: 3,
-                        margin: const EdgeInsets.only(
-                          bottom: 20,
-                        ),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(10),
-                        ),
-                        child: Padding(
-                          padding: const EdgeInsets.all(10.0),
-                          child: ListTile(
-                            title: RichText(
-                              maxLines: 3,
-                              overflow: TextOverflow.ellipsis,
-                              text: TextSpan(
-                                text: '${filteredNotes[index].title} \n',
-                                style: const TextStyle(
-                                  color: Colors.white,
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 18,
-                                  height: 1.5,
-                                ),
-                                children: [
-                                  TextSpan(
-                                    text: filteredNotes[index].content,
-                                    style: const TextStyle(
-                                      color: Colors.white,
-                                      fontWeight: FontWeight.normal,
-                                      fontSize: 18,
-                                      height: 1.5,
-                                    ),
-                                  ),
-                                ],
+                    return Card(
+                      elevation: 3,
+                      margin: const EdgeInsets.only(
+                        bottom: 20,
+                      ),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                      child: Padding(
+                        padding: const EdgeInsets.all(10.0),
+                        child: ListTile(
+                          title: RichText(
+                            maxLines: 3,
+                            overflow: TextOverflow.ellipsis,
+                            text: TextSpan(
+                              text: '${filteredNotes[index].title} \n',
+                              style: const TextStyle(
+                                color: Colors.white,
+                                fontWeight: FontWeight.bold,
+                                fontSize: 18,
+                                height: 1.5,
                               ),
+                              children: [
+                                TextSpan(
+                                  text: filteredNotes[index].content,
+                                  style: const TextStyle(
+                                    color: Colors.white,
+                                    fontWeight: FontWeight.normal,
+                                    fontSize: 18,
+                                    height: 1.5,
+                                  ),
+                                ),
+                              ],
                             ),
-                            subtitle:
-                                Text('${sampleNotes[index].modifiedTime}'),
-                            trailing: IconButton(
-                              onPressed: () {
-                                showDialog(
-                                    barrierDismissible: false,
-                                    context: context,
-                                    builder: (context) {
-                                      return AlertDialog(
-                                        title: const Text(
-                                          'Delete Note',
-                                        ),
-                                        content: const Text(
-                                          'Are you sure you want to remove the note from your Notes ',
-                                        ),
-                                        actions: [
-                                          TextButton(
-                                            onPressed: () {
-                                              Navigator.of(context).pop();
-                                            },
-                                            child: const Text(
-                                              'No',
-                                              style: TextStyle(
-                                                color: Colors.blue,
-                                                fontWeight: FontWeight.bold,
-                                              ),
+                          ),
+                          subtitle: Text('${sampleNotes[index].modifiedTime}'),
+                          trailing: IconButton(
+                            onPressed: () {
+                              showDialog(
+                                  barrierDismissible: false,
+                                  context: context,
+                                  builder: (context) {
+                                    return AlertDialog(
+                                      title: const Text(
+                                        'Delete Note',
+                                      ),
+                                      content: const Text(
+                                        'Are you sure you want to remove the note from your Notes ',
+                                      ),
+                                      actions: [
+                                        TextButton(
+                                          onPressed: () {
+                                            Navigator.of(context).pop();
+                                          },
+                                          child: const Text(
+                                            'No',
+                                            style: TextStyle(
+                                              color: Colors.blue,
+                                              fontWeight: FontWeight.bold,
                                             ),
                                           ),
-                                          TextButton(
-                                            onPressed: () {
-                                              deleteNotes(index);
+                                        ),
+                                        TextButton(
+                                          onPressed: () {
+                                            deleteNotes(index);
 
-                                              Navigator.of(context).pop();
-                                            },
-                                            child: const Text(
-                                              'Yes',
-                                              style: TextStyle(
-                                                color: Colors.red,
-                                                fontWeight: FontWeight.bold,
-                                              ),
+                                            Navigator.of(context).pop();
+                                          },
+                                          child: const Text(
+                                            'Yes',
+                                            style: TextStyle(
+                                              color: Colors.red,
+                                              fontWeight: FontWeight.bold,
                                             ),
                                           ),
-                                        ],
-                                      );
-                                    });
-                              },
-                              icon: const Icon(Icons.delete),
-                            ),
+                                        ),
+                                      ],
+                                    );
+                                  });
+                            },
+                            icon: const Icon(Icons.delete),
                           ),
                         ),
                       ),
