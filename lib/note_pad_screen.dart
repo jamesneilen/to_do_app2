@@ -2,14 +2,10 @@ import 'dart:async';
 import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'global_variables.dart';
-// import 'package:mfa_2/main.dart';
 import 'firstscreen.dart';
 import 'note_services.dart';
-import 'secondscreen.dart';
-// import 'bot_shift.dart';
 import 'note_pad_screen2.dart';
 import 'dart:ui';
-//import 'note_pad_screen2.dart';
 
 class NotePadScreen extends StatefulWidget {
   const NotePadScreen({super.key});
@@ -24,22 +20,13 @@ class _NotePadScreenState extends State<NotePadScreen> {
 
   Future getAllNote() async {
     list = await NoteController().fetchAllNote();
+    setState(() {
+      filteredNotes = List<Note>.from(list!);
+    });
     log(list.toString());
   }
 
   int currentIndex = 0;
-  // getDrawerItemWidget(int pos) {
-  //   switch (pos) {
-  //     case 0:
-  //       return const Notes();
-  //     case 1:
-  //       return const ToDo();
-  //     default:
-  //       return const Text("Error");
-  //   }
-  // }
-
-  //List<String> appList = ["Notes", "TO-Do"];
 
   @override
   void initState() {
@@ -122,12 +109,16 @@ class _NotePadScreenState extends State<NotePadScreen> {
           //   // showBottomSheet(context: context);
           //  }
         },
-        child: const Icon(
+        child: Icon(
           Icons.add,
+          semanticLabel: 'Add',
         ),
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       bottomNavigationBar: BottomNavigationBar(
+        unselectedItemColor: Colors.black,
+        // currentIndex: value,
+        selectedItemColor: Colors.green,
         onTap: (value) {
           setState(() {
             currentIndex = value;
@@ -138,6 +129,7 @@ class _NotePadScreenState extends State<NotePadScreen> {
             icon: Icon(
               Icons.note,
             ),
+            // activeIcon: Icon(Icons.note_add),
             label: 'Notes',
           ),
           BottomNavigationBarItem(
@@ -149,10 +141,8 @@ class _NotePadScreenState extends State<NotePadScreen> {
           ),
         ],
         type: BottomNavigationBarType.fixed,
-        // currentIndex: value,
-        selectedItemColor: Colors.blueAccent,
 
-        // elevation: 5,
+        elevation: 5,
       ),
     );
   }

@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'firstscreen.dart';
 //import 'bot_shift.dart';
 import 'note_pad_screen2.dart';
-import 'secondscreen.dart';
+import 'todo/secondscreen.dart';
 
 void main() {
   runApp(const MyApp());
@@ -125,13 +125,13 @@ class _MyHomePageState extends State<MyHomePage> {
                 children: [
                   Card(
                     child: Padding(
-                      padding: EdgeInsets.all(5.0),
+                      padding: const EdgeInsets.all(5.0),
                       child: Row(
                         children: [
                           IconButton(
                             //style: ButtonStyle(iconSize:)),
                             onPressed: () {},
-                            icon: Icon(Icons.alarm),
+                            icon: const Icon(Icons.alarm),
                             tooltip: 'Set an Alarm',
                           ),
                           const Text(
@@ -146,10 +146,10 @@ class _MyHomePageState extends State<MyHomePage> {
                   ),
                   Card(
                       child: Padding(
-                          padding: EdgeInsets.all(5.0),
+                          padding: const EdgeInsets.all(5.0),
                           child: TextButton(
                             onPressed: () {},
-                            child: Text('SAVE'),
+                            child: const Text('SAVE'),
                           )))
                 ],
               ),

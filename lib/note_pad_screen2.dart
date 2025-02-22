@@ -19,18 +19,15 @@ class _NotesState extends State<Notes> {
   TextEditingController description = TextEditingController();
   List? _list;
   Timer? _time;
-
   DateTime? now;
-
-  Future getAllNote() async {
-    _list = await NoteController().fetchAllNote();
-    log(_list.toString());
-  }
+  String formattedDate = '';
 
   @override
   void initState() {
-    getAllNote();
     super.initState();
+    getAllNote();
+    now = DateTime.now();
+    formattedDate = DateFormat('kk:mm\n EEE d MMM').format(now!);
   }
 
   @override
@@ -40,9 +37,50 @@ class _NotesState extends State<Notes> {
     description.dispose();
   }
 
+  Future<void> getAllNote() async {
+    _list = await NoteController().fetchAllNote();
+    log(_list.toString());
+  }
+
   void clearInput() {
     title.clear();
     description.clear();
+  }
+
+  void saveNote() async {
+    if (title.text.isEmpty || description.text.isEmpty) {
+      print("All fields are required");
+      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+          backgroundColor: Colors.red,
+          content: Text('All fields are required')));
+      return;
+    }
+
+    Note noteInfo = Note(
+        id: null,
+        title: title.text,
+        description: description.text,
+        created_at: DateTime.now().toString());
+
+    try {
+      int value = await NoteController().addNote(noteInfo);
+      if (value > 0) {
+        ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+            backgroundColor: Colors.green,
+            content: Text('Note Added Successful!')));
+        setState(() {
+          _list?.add(noteInfo);
+          log(_list.toString());
+        });
+      } else {
+        ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+            backgroundColor: Colors.red, content: Text('Failed to add note')));
+      }
+    } catch (e) {
+      print("Error: $e");
+      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+          backgroundColor: Colors.red, content: Text('Failed to add note')));
+    }
   }
 
   @override
@@ -55,8 +93,7 @@ class _NotesState extends State<Notes> {
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
-        child: Expanded(
-            child: ListView(children: [
+        child: ListView(children: [
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -93,53 +130,24 @@ class _NotesState extends State<Notes> {
               //       created_at: formattedDate.toString(),
               //     );
               //   },
-              GestureDetector(
-                onTap: () async {
-                  Navigator.pop(context, [title.text, description.text]);
-                  if (title.text.isEmpty || description.text.isEmpty) {
-                    print("All Field are required");
-                    ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-                        backgroundColor: Colors.red,
-                        content: Text('All Field are required')));
-                  } else {
-                    Note noteInfo = Note(
-                        id: null,
-                        title: title.text,
-                        description: description.text,
-                        created_at: DateTime.now().toString());
-
-                    await NoteController().addNote(noteInfo).then((value) {
-                      if (value > 0) {
-                        ScaffoldMessenger.of(context).showSnackBar(
-                            const SnackBar(
-                                backgroundColor: Colors.green,
-                                content: Text('Note Added Sucessful!')));
-                        log(_list.toString());
-                      } else {
-                        ScaffoldMessenger.of(context).showSnackBar(
-                            const SnackBar(
-                                backgroundColor: Colors.red,
-                                content: Text('Fail to add note')));
-                      }
-                    });
-                  }
-                },
-                child: Center(
-                  child: SizedBox(
-                    width: 100,
-                    child: Container(
-                      decoration: BoxDecoration(
-                          color: Colors.white10,
-                          borderRadius: BorderRadius.circular(10)),
-                      child: const Padding(
-                        padding: EdgeInsets.all(8.0),
-                        child: Text(
-                          'Save',
-                          style: TextStyle(
-                            fontSize: 20,
-                            color: Colors.blue,
+              SingleChildScrollView(
+                child: GestureDetector(
+                  onTap: saveNote,
+                  child: const Center(
+                    child: SizedBox(
+                      width: 100,
+                      child: Card(
+                        color: Colors.white10,
+                        child: Padding(
+                          padding: EdgeInsets.all(8.0),
+                          child: Text(
+                            'Save',
+                            style: TextStyle(
+                              fontSize: 20,
+                              color: Colors.blue,
+                            ),
+                            selectionColor: Colors.blueGrey,
                           ),
-                          selectionColor: Colors.blueGrey,
                         ),
                       ),
                     ),
@@ -148,7 +156,7 @@ class _NotesState extends State<Notes> {
               ),
             ],
           ),
-        ])),
+        ]),
       ),
       // ),
       // floatingActionButton: FloatingActionButton(

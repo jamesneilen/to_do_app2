@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
-// import 'package:sqflite/sqflite.dart';
+import 'package:sqflite/sqflite.dart';
 import 'databaseprovider.dart';
 import 'global_variables.dart';
 import 'heap%20_sort.dart';
 
 class NoteList extends StatefulWidget {
-  final DatabaseProvider databaseProvider;
-  const NoteList({super.key, required this.databaseProvider});
+  const NoteList({
+    super.key,
+  });
 
   @override
   State<NoteList> createState() => _NoteList();
@@ -45,6 +46,7 @@ class _NoteList extends State<NoteList> {
         title: const Text(
           'Notes',
           style: TextStyle(
+            color: Colors.blue,
             fontSize: 30,
           ),
         ),
@@ -79,13 +81,15 @@ class _NoteList extends State<NoteList> {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (context) => HeapSort(),
+                      builder: (context) =>
+                          HeapSort(firstNote: filteredNotes[1]),
                     ),
                   );
                 },
                 child: ListView.builder(
                   itemCount: filteredNotes.length,
                   itemBuilder: (context, index) {
+                    final notes = filteredNotes[index];
                     return Card(
                       elevation: 3,
                       margin: const EdgeInsets.only(
@@ -97,6 +101,13 @@ class _NoteList extends State<NoteList> {
                       child: Padding(
                         padding: const EdgeInsets.all(10.0),
                         child: ListTile(
+                          onTap: () {
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) =>
+                                        HeapSort(firstNote: notes)));
+                          },
                           title: RichText(
                             maxLines: 3,
                             overflow: TextOverflow.ellipsis,
